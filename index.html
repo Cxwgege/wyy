@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>王莹莹同学</title>
+    <meta name="language" content="zh-CN">
+
+    <link rel="icon" type="image/x-icon" href="https://s2.loli.net/2023/04/10/6HGnL1CxlaK9zfh.png">
+    <link rel="stylesheet" href="css/love.css">
+    <style>
+        /* 开始按钮样式 */
+        #startButton {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: #ff6b81;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        #startButton:hover {
+            background-color: #ff4757;
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* 遮罩层，覆盖整个页面 */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 999;
+        }
+        
+        /* 烟花粒子样式 */
+        .firework-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ff6b81;
+            box-shadow: 0 0 6px #ff6b81;
+            transition: all 1.5s ease-out;
+            opacity: 0;
+        }
+        
+        /* 文字容器 */
+        #text-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            transition: opacity 2s ease;
+            z-index: 100;
+            height: 400px; /* 增加容器高度，为升起的文字提供更多空间 */
+        }
+        
+        #text-container .name {
+            font-size: 72px;
+            font-weight: bold;
+            color: #ff6b81;
+            text-shadow: 0 0 10px rgba(255, 107, 129, 0.7);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        #text-container .love-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff6b81;
+            text-shadow: 0 0 10px rgba(255, 107, 129, 0.7);
+            position: relative;
+            margin-bottom: 10px; /* 增加底部间距，为升起的文字腾出更多空间 */
+        }
+        
+        /* 升起的文字容器 */
+        .rising-text-container {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: -200px; /* 初始位置在容器更下方 */
+            opacity: 0;
+            transition: bottom 1.5s ease, opacity 1.5s ease;
+        }
+        
+        /* 升起的文字样式 */
+        .rising-text {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff6b81;
+            text-shadow: 0 0 8px rgba(255, 107, 129, 0.7);
+            margin-bottom: 20px; /* 增加文字间距 */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        /* 爱心图标样式 */
+        .heart-icon {
+            display: inline-block;
+            position: relative;
+            width: 20px;
+            height: 20px;
+            background-color: var(--heart-color, #ff6b81);
+            transform: rotate(45deg);
+            animation: pulse 1.5s infinite;
+            margin: 0 5px;
+        }
+        
+        .heart-icon:before,
+        .heart-icon:after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background-color: inherit;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart-icon:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .heart-icon:after {
+            top: 0;
+            left: -10px;
+        }
+        
+        /* 浮动爱心样式 */
+        .floating-heart {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* 爱心脉动动画 */
+        @keyframes pulse {
+            0% {
+                transform: rotate(45deg) scale(0.8);
+            }
+            50% {
+                transform: rotate(45deg) scale(1.1);
+            }
+            100% {
+                transform: rotate(45deg) scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 遮罩层 -->
+    <div id="overlay"></div>
+    
+    <!-- 开始按钮 -->
+    <button id="startButton">准备好了吗？我们开始吧！</button>
+
+    <!-- 文字容器 -->
+    <div id="text-container">
+        <div class="name">王莹莹</div>
+        <div class="love-text">
+            <span class="heart-icon"></span>
+            喜欢你
+            <span class="heart-icon"></span>
+        </div>
+        
+        <!-- 升起的文字容器 -->
+        <div class="rising-text-container">
+            <div class="rising-text" id="text1">工资上交</div>
+            <div class="rising-text" id="text2">真诚</div>
+            <div class="rising-text" id="text3">安全感拉满</div>
+        </div>
+    </div>
+
+    <audio loop="loop" id="audios" preload="auto">
+        <source src="MP3/1.mp3" />
+    </audio>
+
+    <div class="container" onselectstart="return false;" unselectable="on" style="-moz-user-select:none;">
+        <div class="body_left">
+            <img src="images/biubiubiu.gif" alt="" ondragstart='return false;'>
+        </div>
+
+        <div class="body_center love">
+            <div class="block">
+                <div class="div1"></div>
+                <div class="div2"></div>
+                <div class="div3"></div>
+                <div class="div4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="border">
+            <div class="border-top"></div>
+            <div class="border-bottom"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/love.js"></script>
+</body>
+</html>
